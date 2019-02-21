@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import Loading from "./loading";
 import styled from "styled-components";
+import Truncate from "react-truncate";
+import TruncateMarkup from "react-truncate-markup";
 
 const Wrap = styled.div`
   width: 680px;
@@ -93,7 +95,7 @@ class App extends Component {
       .catch(error => {
         this.setState({ error: true, loading: false });
       });
-    this.loop();
+    // this.loop();
   }
 
   componentDidUpdate() {
@@ -136,6 +138,24 @@ class App extends Component {
   render() {
     let content;
     const { error, loading, currentIndex, data } = this.state;
+    const readMore = (
+      <span>
+        ...{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={
+            data[currentIndex]
+              ? `https://birdeye.com/esc-mattress-center-154743411347922/review/${
+                  data[currentIndex].reviewId
+                }`
+              : "https://birdeye.com/esc-mattress-center-154743411347922"
+          }
+        >
+          read more
+        </a>
+      </span>
+    );
     if (loading) {
       content = <Loading />;
     } else if (error) {
@@ -151,8 +171,20 @@ class App extends Component {
               back
             </Back>
             <Content>
-              {console.log(this.state.currentIndex)}
-              <p>{data[currentIndex].comments}</p>
+              {console.log(data[currentIndex])}
+              <TruncateMarkup lines={2} ellipsis={readMore}>
+                <div>{data[currentIndex].comments}</div>
+              </TruncateMarkup>
+              {/* <Truncate
+                lines={4}
+                ellipsis={
+                  <span>
+                    ... <a href="/link/to/article">Read more</a>
+                  </span>
+                }
+              >
+                {data[currentIndex].comments}
+              </Truncate> */}
             </Content>
             <Next type="button" onClick={this.next}>
               next
