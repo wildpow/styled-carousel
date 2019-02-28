@@ -10,7 +10,8 @@ const Wrap = styled.div`
   width: 680px;
   height: 300px;
   margin: 0 auto;
-  background-color: lightgray;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  /* background-color: lightgray; */
 `;
 const Slide = styled.div`
   display: grid;
@@ -190,15 +191,15 @@ class App extends Component {
                 })}
                 enter={() => ({
                   opacity: [1],
-                  timing: { duration: 500 }
+                  timing: { duration: 1000 }
                 })}
                 update={() => ({
                   opacity: [1],
-                  timing: { duration: 500 }
+                  timing: { duration: 1000 }
                 })}
                 leave={() => ({
                   opacity: [0],
-                  timing: { duration: 300 }
+                  timing: { duration: 200 }
                 })}
               >
                 {nodes => (
