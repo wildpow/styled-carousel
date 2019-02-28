@@ -9,7 +9,7 @@ const Wrap = styled.div`
   width: 680px;
   height: 300px;
   margin: 0 auto;
-  background-color: green;
+  background-color: lightgray;
 `;
 const Slide = styled.div`
   display: grid;
@@ -60,8 +60,15 @@ const Next = styled(Button)`
 const Content = styled.div`
   grid-column-start: 2;
   grid-column-end: 2;
-  align-self: center;
+  align-self: flex-start;
   justify-self: center;
+  font-family: "Open Sans";
+  line-height: 1.6em;
+  font-size: 1.6em;
+  margin-top: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+  text-indent: 20px;
 `;
 
 class App extends Component {
@@ -95,7 +102,7 @@ class App extends Component {
       .catch(error => {
         this.setState({ error: true, loading: false });
       });
-    // this.loop();
+    this.loop();
   }
 
   componentDidUpdate() {
@@ -116,7 +123,7 @@ class App extends Component {
       if (!this.state.pause) {
         this.setState({ currentIndex: this.state.currentIndex + 1 });
       }
-    }, 1000);
+    }, 3000);
   }
 
   back() {
@@ -172,19 +179,13 @@ class App extends Component {
             </Back>
             <Content>
               {console.log(data[currentIndex])}
-              <TruncateMarkup lines={2} ellipsis={readMore}>
+              <TruncateMarkup lines={4} ellipsis={readMore}>
                 <div>{data[currentIndex].comments}</div>
               </TruncateMarkup>
-              {/* <Truncate
-                lines={4}
-                ellipsis={
-                  <span>
-                    ... <a href="/link/to/article">Read more</a>
-                  </span>
-                }
-              >
-                {data[currentIndex].comments}
-              </Truncate> */}
+              <p>
+                {`- ${data[currentIndex].reviewer.firstName} `}
+                {`${data[currentIndex].reviewer.lastName}`}
+              </p>
             </Content>
             <Next type="button" onClick={this.next}>
               next
