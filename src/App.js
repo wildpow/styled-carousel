@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import Loading from "./loading";
 import styled from "styled-components";
-import Truncate from "react-truncate";
+// import Truncate from "react-truncate";
 import TruncateMarkup from "react-truncate-markup";
+import { NodeGroup } from "react-move";
 
 const Wrap = styled.div`
   width: 680px;
@@ -65,10 +66,12 @@ const Content = styled.div`
   font-family: "Open Sans";
   line-height: 1.6em;
   font-size: 1.6em;
-  margin-top: 20px;
+  /* margin-top: 20px;
   margin-right: 5px;
-  margin-left: 5px;
+  margin-left: 5px; */
   text-indent: 20px;
+  width: 680px;
+  height: 300px;
 `;
 
 class App extends Component {
@@ -178,14 +181,54 @@ class App extends Component {
               back
             </Back>
             <Content>
-              {console.log(data[currentIndex])}
-              <TruncateMarkup lines={4} ellipsis={readMore}>
-                <div>{data[currentIndex].comments}</div>
-              </TruncateMarkup>
-              <p>
-                {`- ${data[currentIndex].reviewer.firstName} `}
-                {`${data[currentIndex].reviewer.lastName}`}
-              </p>
+              <NodeGroup
+                style={{ position: "relative" }}
+                data={[currentIndex]}
+                keyAccessor={d => d}
+                start={() => ({
+                  opacity: 0
+                })}
+                enter={() => ({
+                  opacity: [1],
+                  timing: { duration: 500 }
+                })}
+                update={() => ({
+                  opacity: [1],
+                  timing: { duration: 500 }
+                })}
+                leave={() => ({
+                  opacity: [0],
+                  timing: { duration: 300 }
+                })}
+              >
+                {nodes => (
+                  <div style={{ position: "relative" }}>
+                    {nodes.map(({ key, data, state: { opacity } }) => (
+                      <div key={key} style={{ opacity, position: "relative" }}>
+                        <div
+                          style={{
+                            position: "absolute",
+                            margin: "25px",
+                            padding: "20px"
+                          }}
+                        >
+                          <TruncateMarkup lines={4} ellipsis={readMore}>
+                            <div>{this.state.data[data].comments}</div>
+                          </TruncateMarkup>
+                          <p>
+                            {`- ${this.state.data[data].reviewer.firstName} `}
+                            {`${this.state.data[data].reviewer.lastName}`}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </NodeGroup>
+
+              {/* {console.log(data[currentIndex])} */}
+
+              {/* </TruncateMarkup> */}
             </Content>
             <Next type="button" onClick={this.next}>
               next
