@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle } from "styled-components";
 import styledNormalize from "styled-normalize";
-import App from "./App2";
+import App from "./cool";
 
 const GlobalStyle = createGlobalStyle`
   ${styledNormalize}

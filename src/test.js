@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+function useInterval(callback, pause) {
+  const savedCallback = useRef();
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (pause !== true) {
+      let id = setInterval(tick, 1000);
+      return () => clearInterval(id);
+    }
+  }, [pause]);
+}
 
 const Test = () => {
   const [pause, setPause] = useState(false);
   const [count, setCount] = useState(0);
-  const maxCount = 60;
-  useEffect(() => {
-    if (maxCount === count && pause === false) {
-      setCount(0);
-    }
-    setInterval(() => {
-      if (!pause) {
-        setCount(prev => prev + 1);
-      }
-    }, 1000);
-    return () => {
-      clearInterval();
-    };
-  }, []);
+  const maxCount = 10;
+  useInterval(() => {
+    setCount(count === maxCount ? 0 : count + 1);
+  }, pause);
   return (
     <div
       style={{ width: "500px", height: "500px", background: "yellow" }}
